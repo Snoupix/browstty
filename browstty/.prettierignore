@@ -1,0 +1,5 @@
+pnpm-lock.yaml
+package-lock.json
+.pnpm-store/
+*.md
+*.wasm
