@@ -15,6 +15,8 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
+    exe.addIncludePath(b.path("src/gol.zig"));
+
     exe.root_module.addImport("zjb", zjb.module("zjb"));
 
     exe.entry = .disabled;
@@ -25,7 +27,7 @@ pub fn build(b: *std.Build) void {
     extract_js.addArg("Zjb");
     extract_js.addArtifactArg(exe);
 
-    const exe_step = b.step("js", "Build the JS file");
+    const exe_step = b.step("all", "Build the JS file too");
     exe_step.dependOn(&b.addInstallArtifact(exe, .{
         .dest_dir = .{ .override = out_dir },
     }).step);

@@ -10,7 +10,7 @@ export async function load() {
 
         const wasmModule = await WebAssembly.instantiate(wasmBuffer, {
             env: {
-                memory: new WebAssembly.Memory({ initial: 256, maximum: 256 }),
+                memory: new WebAssembly.Memory({ initial: 100, maximum: 1024, shared: true }),
                 __stack_pointer: 0,
                 abort: () => console.log("Aborted"),
             },

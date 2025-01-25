@@ -1,34 +1,56 @@
 <script lang="ts">
-    import { onMount } from "svelte";
+    import Gol from "./components/gol.svelte";
 
-    import * as wasm from "./lib/wasm";
+    import "$/main.css";
 
-    let wasm_instance: Awaited<ReturnType<(typeof wasm)["load"]>> = $state(null);
+    const SelectedModule = {
+        None: 0,
+        GameOfLife: 1,
+        Ghostty: 2,
+    } as const;
 
-    onMount(async () => {
-        wasm_instance = await wasm.load();
-    });
-
-    $effect(() => {
-        if (wasm_instance == null) {
-            return;
-        }
-
-        console.log(wasm_instance.exports?.add(4, 4));
-    });
+    let selected_module: typeof SelectedModule[keyof typeof SelectedModule] = $state(SelectedModule.None);
 </script>
 
-<main></main>
+<main>
+    <h1>WASM Playground</h1>
+    <nav>
+        <button onclick={() => selected_module = SelectedModule.None}>None</button>
+        <button onclick={() => selected_module = SelectedModule.GameOfLife}>Game Of Life</button>
+        <button onclick={() => selected_module = SelectedModule.Ghostty}>Ghostty</button>
+    </nav>
 
-<style lang="postcss">
+    {#if selected_module == SelectedModule.GameOfLife}
+        <Gol />
+    {:else if selected_module == SelectedModule.Ghostty}
+        <h1>x</h1>
+    {/if}
+</main>
+
+<!-- Maybe a missconfiguration but the TS import and the CSS import are necessary -->
+<style>
+    :global(:root) {
+        @import "tailwindcss";
+    }
+
     :global(*) {
         margin: 0;
         padding: 0;
     }
 
     main {
-        width: 100vw;
-        height: 100vh;
-        background-color: #606060;
+        @apply w-screen min-h-screen max-h-screen bg-[#606060] overflow-y-scroll;
+
+        h1 {
+            @apply text-center text-amber-600 py-12 font-bold text-3xl;
+        }
+
+        nav {
+            @apply w-full flex flex-row justify-around items-center;
+
+            button {
+                @apply rounded-lg text-gray-600 bg-amber-600 border-none py-2 px-4 cursor-pointer;
+            }
+        }
     }
 </style>
