@@ -2,6 +2,7 @@ const std = @import("std");
 
 const zjb = @import("zjb");
 const gol = @import("gol.zig");
+const ghostty = @import("ghostty.zig");
 
 const Gol = gol.Gol;
 
@@ -31,4 +32,8 @@ export fn next_gen(self: *Gol) void {
 
 export fn get_cell(self: *Gol, x: u32, y: u32) bool {
     return self.get_cell(x, y);
+}
+
+export fn new_ghostty() void {
+    ghostty.init();
 }

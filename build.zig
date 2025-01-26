@@ -16,6 +16,10 @@ pub fn build(b: *std.Build) void {
     });
 
     exe.addIncludePath(b.path("src/gol.zig"));
+    exe.addIncludePath(b.path("src/ghostty.zig"));
+
+    exe.linkLibC();
+    exe.addIncludePath(b.path("lib-built/"));
 
     exe.root_module.addImport("zjb", zjb.module("zjb"));
 
